@@ -1,0 +1,184 @@
+public class Vetor {
+    private String[] elementos;
+    private int tamanho;
+
+    public Vetor(int capacidade) {
+        elementos = new String[capacidade];
+        tamanho = 0;
+    }
+
+    public void adicionar(String elemento) {
+        if (tamanho == elementos.length) {
+            aumentarCapacidade();
+        }
+        elementos[tamanho++] = elemento;
+    }
+
+    public void adicionar(int posicao, String elemento) {
+        if (posicao < 0 || posicao > tamanho) {
+            throw new IndexOutOfBoundsException("Posição inválida");
+        }
+        if (tamanho == elementos.length) {
+            aumentarCapacidade();
+        }
+        for (int i = tamanho; i > posicao; i--) {
+            elementos[i] = elementos[i - 1];
+        }
+        elementos[posicao] = elemento;
+        tamanho++;
+    }
+
+    public String obter(int posicao) {
+        if (posicao < 0 || posicao >= tamanho) {
+            throw new IndexOutOfBoundsException("Posição inválida");
+        }
+        return elementos[posicao];
+    }
+
+    public void alterar(int posicao, String elemento) {
+        if (posicao < 0 || posicao >= tamanho) {
+            throw new IndexOutOfBoundsException("Posição inválida");
+        }
+        elementos[posicao] = elemento;
+    }
+
+    private void aumentarCapacidade() {
+        String[] novoArray = new String[elementos.length * 2];
+        System.arraycopy(elementos, 0, novoArray, 0, elementos.length);
+        elementos = novoArray;
+    }
+
+    public void remover(int indice) {
+        if (indice < 0 || indice >= tamanho) {
+            throw new IndexOutOfBoundsException("Índice inválido");
+        }
+        for (int i = indice; i < tamanho - 1; i++) {
+            elementos[i] = elementos[i + 1];
+        }
+        elementos[--tamanho] = null;
+    }
+
+    public void remover(String valor) {
+        for (int i = 0; i < tamanho; i++) {
+            if (elementos[i].equals(valor)) {
+                remover(i);
+                return;
+            }
+        }
+    }
+
+    public boolean contem(String valor) {
+        for (int i = 0; i < tamanho; i++) {
+            if (elementos[i].equals(valor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int tamanho() {
+        return tamanho;
+    }
+
+    public boolean estaVazio() {
+        return tamanho == 0;
+    }
+
+    public void limpar() {
+        for (int i = 0; i < tamanho; i++) {
+            elementos[i] = null;
+        }
+        tamanho = 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < tamanho; i++) {
+            sb.append(elementos[i]);
+            if (i < tamanho - 1) sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+}
+
+class Matriz {
+    private int[][] matriz;
+
+    public Matriz(int[][] matriz) {
+        this.matriz = matriz;
+    }
+
+    public int obterMaiorElemento() {
+        int maior = Integer.MIN_VALUE;
+        for (int[] linha : matriz) {
+            for (int valor : linha) {
+                if (valor > maior) maior = valor;
+            }
+        }
+        return maior;
+    }
+
+    public int obterMenorElemento() {
+        int menor = Integer.MAX_VALUE;
+        for (int[] linha : matriz) {
+            for (int valor : linha) {
+                if (valor < menor) menor = valor;
+            }
+        }
+        return menor;
+    }
+
+    public double calcularMedia() {
+        int soma = 0, total = 0;
+        for (int[] linha : matriz) {
+            for (int valor : linha) {
+                soma += valor;
+                total++;
+            }
+        }
+        return (double) soma / total;
+    }
+
+    public int[] somarElementosPorLinha() {
+        int[] somaLinhas = new int[matriz.length];
+        for (int i = 0; i < matriz.length; i++) {
+            for (int valor : matriz[i]) {
+                somaLinhas[i] += valor;
+            }
+        }
+        return somaLinhas;
+    }
+
+    public int[] somarElementosPorColuna() {
+        int colunas = matriz[0].length;
+        int[] somaColunas = new int[colunas];
+        for (int[] linha : matriz) {
+            for (int j = 0; j < colunas; j++) {
+                somaColunas[j] += linha[j];
+            }
+        }
+        return somaColunas;
+    }
+
+    public int calcularSomaTotal() {
+        int soma = 0;
+        for (int[] linha : matriz) {
+            for (int valor : linha) {
+                soma += valor;
+            }
+        }
+        return soma;
+    }
+
+    public int contarOcorrencias(int valor) {
+        int contador = 0;
+        for (int[] linha : matriz) {
+            for (int v : linha) {
+                if (v == valor) contador++;
+            }
+        }
+        return contador;
+    }
+}
